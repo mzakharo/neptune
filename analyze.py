@@ -57,20 +57,10 @@ def ocr(img, show=False):
 
 
 if __name__ == '__main__':
-
-    img_file = 'orig.png'
     img_file = 'data/002e103124.jpg'
     img_file = sys.argv[1]
-
     print('img_file', img_file)
-
-    if 'raw' in img_file:
-        with open(img_file, 'rb') as f:
-            pixels = f.read()
-        img = np.frombuffer(pixels, np.uint8).reshape(image_size[1], image_size[0], 4)
-    else:
-        img = cv2.imread(img_file)
-
+    img = cv2.imread(img_file)
     result, img = ocr(img, show=True)
     print(result)
     #img = analyze(img, show=True)
