@@ -41,7 +41,7 @@ def on_message(client, userdata, msg):
             if 0 <= (consumption-prev) < 50:
                 data = json.dumps(dict(volume=consumption))
                 print('publish', data)
-                client.publish("flowy/status", data)
+                client.publish("neptune/status", data)
             prev = consumption
     except Exception as e:
         print(e)
