@@ -28,7 +28,7 @@ def on_message(client, userdata, msg):
     image_size = (405, 720)
     img = np.frombuffer(msg.payload, np.uint8).reshape(image_size[1], image_size[0], 4)
     result, _ = ocr(img)
-    filename = f'data/{result}.jpg'
+    filename = f'data/{result}.png'
     print(result, filename)
     if args.dump:
         cv2.imwrite(filename, img)
