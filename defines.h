@@ -187,6 +187,6 @@ typedef enum charset_e {
   CS_TT_ROBOT
 } charset_t;
 
-#define DEFAULT_CHARSET CS_DECIMAL
+#define DEFAULT_CHARSET CS_FULL
 
 #endif /* SSOCR2_DEFINES_H */
