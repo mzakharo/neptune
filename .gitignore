@@ -11,3 +11,5 @@
 /*.deb
 /*.tmp
 /ssocr-manpage.html
+/data
+__pycache__
