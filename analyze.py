@@ -16,17 +16,18 @@ def analyze(img, show=False):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     #img = cv2.Canny(img, 100, 200)
     #img = cv2.threshold(img, 110, 255, cv2.THRESH_TOZERO)[1]
-    img = cv2.bilateralFilter(img, 17, 21, 21)
+    img = cv2.bilateralFilter(img, 17, 11, 11)
+    #img = cv2.bilateralFilter(img, 11, 17, 17) #orig
     #img = cv2.medianBlur(img, 3)
     img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 31, 15)
-    img = cv2.medianBlur(img, 5)
+    #img = cv2.medianBlur(img, 5)
     #img = cv2.Canny(img,1,35)
     #img = cv2.GaussianBlur(img, (1,1), 0)
     #img = cv2.GaussianBlur(img, (5,5), 0)
 
     #blur   = cv2.GaussianBlur(img, (5,5), 0)
     img = ndimage.rotate(img, -1.49)
-    img = img[187:257, 43:392]
+    img = img[187:257, 63:392]
     #img = img[130:183, 42:277]
 
     #rotation angle in degree
@@ -48,7 +49,8 @@ def ocr(img, show=False, debug=False):
             #print(fname)
             cv2.imwrite(fname, img)
             try:
-                result = subprocess.check_output(['./ssocr',  '-d',  '-1',  '-i', '1', fname])
+                result = subprocess.check_output(
+                        ['./ssocr',  '-d',  '-1',  '-i', '1', '-a', '-n', '3','-G', fname])
             except Exception as e:
                 print(e)
                 return f"undecoded-{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}", img
