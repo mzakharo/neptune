@@ -20,7 +20,7 @@ def analyze(img, show=False):
     #img = cv2.Canny(img, 100, 200)
     #img = cv2.threshold(img, 110, 255, cv2.THRESH_TOZERO)[1]
 
-    img = cv2.bilateralFilter(img, 18, 23 , 23)
+    img = cv2.bilateralFilter(img, 18, 13 , 13)
     img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 51, 15)
     #img = cv2.medianBlur(img, 3)
 
@@ -50,7 +50,7 @@ def ocr(img, show=False, debug=False):
             cv2.imwrite(fname, img)
             try:
                 _debug = '-Dfoo.png' if debug else ''
-                cmd = f'./ssocr -d -1 -i 1 {_debug} {fname}'
+                cmd = f'./ssocr -d -1 -i 0 {_debug} {fname}'
                 result = subprocess.check_output(shlex.split(cmd))
             except Exception as e:
                 print(e)
