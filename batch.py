@@ -2,8 +2,10 @@ from glob import glob
 import cv2
 from analyze import ocr
 import multiprocessing
+import sys
 
-files = glob('data/*.png')
+folder = sys.argv[1]
+files = glob(f'{folder}/*.png')
 
 def test(img_file):
     img = cv2.imread(img_file)
