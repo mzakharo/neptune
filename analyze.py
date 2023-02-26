@@ -9,7 +9,6 @@ import subprocess
 import sys
 import shlex
 
-
 def analyze(img, show=False):
     # Optimizing the image
 
@@ -17,12 +16,34 @@ def analyze(img, show=False):
 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
+
     #img = cv2.Canny(img, 100, 200)
     #img = cv2.threshold(img, 110, 255, cv2.THRESH_TOZERO)[1]
 
+    img = cv2.medianBlur(img, 3)
     img = cv2.bilateralFilter(img, 27, 20 , 24)
-    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 75, 19)
-    #img = cv2.medianBlur(img, 3)
+    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 55, 19)
+
+    '''
+    import easyocr
+    reader = easyocr.Reader(['en'])
+    bounds = reader.readtext(img)
+    for bound in bounds:
+        if bound[1] == 'LPM':
+            print(bound[0][1])
+            x = bound[0][1][0] #383
+            y = bound[0][1][1] #244
+            x1 = x + 7
+            x0 = x1 - (390-50)
+            y1 = y - 24
+            y0 = y1 - (220-160)
+            print(y0, y1, x0 , x1)
+            break
+    '''
+    y0 = 160
+    y1 = 220
+    x0 = 50
+    x1 = 390
 
     #kernel = np.ones((2, 2), np.uint8)
     #img = cv2.erode(img, kernel, iterations=1)
@@ -30,7 +51,7 @@ def analyze(img, show=False):
     #img = cv2.GaussianBlur(img, (1,1), 0)
 
     img = ndimage.rotate(img, -0.8)
-    img = img[160:220, 50:390]
+    img = img[y0:y1,x0:x1]
 
     if show:
         cv2.imshow('image', img)
@@ -49,9 +70,23 @@ def parse(result):
 
 
 def ocr(img, show=False, debug=False):
-    #print('orig.png')
-    #cv2.imwrite('orig.png', img)
     img = analyze(img, show=False)
+
+    '''
+    bounds = reader.readtext(img , allowlist ='0123456789')
+    print(bounds)
+    '''
+
+    #'''
+    if debug:
+        import pytesseract as pyt
+        os.environ['TESSDATA_PREFIX'] = 'tessdata'
+        ocr_result = pyt.image_to_string(img,  lang='lets', config='--psm 7 -c tessedit_char_whitelist=.0123456789')
+        print('letsg', ocr_result.strip().replace(' ', '').replace('.', ''))
+    #ocr_result = pyt.image_to_string(img,  lang='letsgodigital', config='--psm 7 -c tessedit_char_whitelist=.0123456789')
+    #print('digial', ocr_result)
+    #'''
+
     try:
         with tempfile.NamedTemporaryFile(suffix='.png') as tmp:
             fname = tmp.name
@@ -68,7 +103,7 @@ def ocr(img, show=False, debug=False):
                 result = exc.output
             result = result.decode().strip()
             if debug:
-                print('result', result)
+                print('ssocr', result)
             result = result.replace('.', '')
             return err, result, img
     finally:
@@ -85,6 +120,6 @@ if __name__ == '__main__':
     print('img_file', img_file)
     img = cv2.imread(img_file)
     err, result, img = ocr(img, show=True, debug=True)
-    print(err, result)
+    print('err:', err,'result:', result)
     #img = analyze(img, show=True)
     cv2.imwrite('proc.png', img)
