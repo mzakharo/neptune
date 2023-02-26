@@ -19,9 +19,8 @@ def analyze(img, show=False):
     #img = cv2.Canny(img, 100, 200)
     #img = cv2.threshold(img, 110, 255, cv2.THRESH_TOZERO)[1]
 
-    #img = cv2.bilateralFilter(img, 17, 11, 11)
-    img = cv2.bilateralFilter(img, 11, 17, 17) #orig
-    #img = cv2.medianBlur(img, 3)
+    img = cv2.bilateralFilter(img, 17, 11, 11)
+    img = cv2.medianBlur(img, 3)
     img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 31, 15)
 
     #kernel = np.ones((3, 3), np.uint8)
