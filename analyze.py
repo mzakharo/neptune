@@ -26,8 +26,8 @@ def analyze(img, show=False):
     #img = cv2.GaussianBlur(img, (5,5), 0)
 
     #blur   = cv2.GaussianBlur(img, (5,5), 0)
-    img = ndimage.rotate(img, -1.49)
-    img = img[187:257, 63:392]
+    img = ndimage.rotate(img, 1)
+    img = img[150:225, 33:362]
     #img = img[130:183, 42:277]
 
     #rotation angle in degree
