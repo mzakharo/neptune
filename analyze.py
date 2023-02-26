@@ -20,7 +20,7 @@ def analyze(img, show=False):
     #img = cv2.Canny(img, 100, 200)
     #img = cv2.threshold(img, 110, 255, cv2.THRESH_TOZERO)[1]
 
-    img = cv2.bilateralFilter(img, 27, 21 , 21)
+    img = cv2.bilateralFilter(img, 27, 24 , 24)
     img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 31, 15)
     #img = cv2.medianBlur(img, 3)
 
@@ -30,7 +30,7 @@ def analyze(img, show=False):
     #img = cv2.GaussianBlur(img, (1,1), 0)
 
     img = ndimage.rotate(img, 0.35)
-    img = img[155:216, 35:370]
+    img = img[156:216, 35:375]
 
     if show:
         cv2.imshow('image', img)
