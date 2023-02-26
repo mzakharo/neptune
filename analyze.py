@@ -50,7 +50,7 @@ def ocr(img, show=False, debug=False):
             cv2.imwrite(fname, img)
             try:
                 _debug = '-Dfoo.png' if debug else ''
-                cmd = f'./ssocr -d -1 -i 0 {_debug} {fname}'
+                cmd = f'./ssocr -d -1 -i 1 {_debug} {fname}'
                 result = subprocess.check_output(shlex.split(cmd))
             except Exception as e:
                 print(e)
