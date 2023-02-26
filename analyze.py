@@ -37,6 +37,16 @@ def analyze(img, show=False):
         cv2.waitKey(0)
     return img
 
+def parse(result):
+    err = True
+    if len(result) == 9:
+        try:
+            result = int(result)
+            err = False
+        except:
+            pass
+    return err, result
+
 
 def ocr(img, show=False, debug=False):
     #print('orig.png')
@@ -48,18 +58,19 @@ def ocr(img, show=False, debug=False):
             #fname = 'rec.png'
             #print(fname)
             cv2.imwrite(fname, img)
+            err = False
             try:
                 _debug = '-Dfoo.png' if debug else ''
                 cmd = f'./ssocr -d -1 -i 0 -n 3 {_debug} {fname}'
                 result = subprocess.check_output(shlex.split(cmd))
-            except Exception as e:
-                print(e)
-                return f"undecoded-{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}", img
+            except subprocess.CalledProcessError as exc:                                                                                                   
+                err = True
+                result = exc.output
             result = result.decode().strip()
             if debug:
                 print('result', result)
             result = result.replace('.', '')
-            return result, img
+            return err, result, img
     finally:
         if show:
             cv2.imshow('image', img)
@@ -73,7 +84,7 @@ if __name__ == '__main__':
     img_file = sys.argv[1]
     print('img_file', img_file)
     img = cv2.imread(img_file)
-    result, img = ocr(img, show=True, debug=True)
-    print(result)
+    err, result, img = ocr(img, show=True, debug=True)
+    print(err, result)
     #img = analyze(img, show=True)
     cv2.imwrite('proc.png', img)
