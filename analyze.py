@@ -16,18 +16,18 @@ def analyze(img, show=False):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     #img = cv2.Canny(img, 100, 200)
     #img = cv2.threshold(img, 110, 255, cv2.THRESH_TOZERO)[1]
-    img = cv2.bilateralFilter(img, 17, 11, 11)
-    #img = cv2.bilateralFilter(img, 11, 17, 17) #orig
+    #img = cv2.bilateralFilter(img, 17, 11, 11)
+    img = cv2.bilateralFilter(img, 11, 17, 17) #orig
     #img = cv2.medianBlur(img, 3)
     img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 31, 15)
-    #img = cv2.medianBlur(img, 5)
+    img = cv2.medianBlur(img, 3)
     #img = cv2.Canny(img,1,35)
     #img = cv2.GaussianBlur(img, (1,1), 0)
     #img = cv2.GaussianBlur(img, (5,5), 0)
 
     #blur   = cv2.GaussianBlur(img, (5,5), 0)
     img = ndimage.rotate(img, 1)
-    img = img[150:225, 33:362]
+    img = img[150:225, 35:370]
     #img = img[130:183, 42:277]
 
     #rotation angle in degree
