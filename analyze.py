@@ -29,8 +29,8 @@ def analyze(img, show=False):
     #img = cv2.Canny(img,1,35)
     #img = cv2.GaussianBlur(img, (1,1), 0)
 
-    img = ndimage.rotate(img, 0.35)
-    img = img[156:216, 35:375]
+    img = ndimage.rotate(img, -0.8)
+    img = img[160:220, 50:390]
 
     if show:
         cv2.imshow('image', img)
