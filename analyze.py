@@ -7,6 +7,7 @@ from scipy import ndimage
 import tempfile
 import subprocess
 import sys
+import shlex
 
 
 def analyze(img, show=False):
@@ -19,16 +20,16 @@ def analyze(img, show=False):
     #img = cv2.Canny(img, 100, 200)
     #img = cv2.threshold(img, 110, 255, cv2.THRESH_TOZERO)[1]
 
-    img = cv2.bilateralFilter(img, 17, 11, 11)
-    img = cv2.medianBlur(img, 3)
-    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 31, 15)
+    img = cv2.bilateralFilter(img, 18, 23 , 23)
+    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 51, 15)
+    #img = cv2.medianBlur(img, 3)
 
-    #kernel = np.ones((3, 3), np.uint8)
+    #kernel = np.ones((2, 2), np.uint8)
     #img = cv2.erode(img, kernel, iterations=1)
     #img = cv2.Canny(img,1,35)
     #img = cv2.GaussianBlur(img, (1,1), 0)
 
-    img = ndimage.rotate(img, 0.4)
+    img = ndimage.rotate(img, 0.35)
     img = img[155:216, 35:370]
 
     if show:
@@ -48,8 +49,9 @@ def ocr(img, show=False, debug=False):
             #print(fname)
             cv2.imwrite(fname, img)
             try:
-                result = subprocess.check_output(
-                        ['./ssocr',  '-d',  '-1',  '-i', '1', '-a', '-n', '3','-G', fname])
+                _debug = '-Dfoo.png' if debug else ''
+                cmd = f'./ssocr -d -1 -i 0 {_debug} {fname}'
+                result = subprocess.check_output(shlex.split(cmd))
             except Exception as e:
                 print(e)
                 return f"undecoded-{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}", img
