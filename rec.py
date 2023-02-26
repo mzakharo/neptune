@@ -38,7 +38,7 @@ def on_message(client, userdata, msg):
             global prev
             if 0 <= (consumption-prev) < 50:
                 data = json.dumps(dict(volume=consumption))
-                print('publish', data)
+                print('publish', not args.nopublish, data)
                 if not args.nopublish:
                     client.publish("neptune/status", data)
             prev = consumption
