@@ -972,11 +972,15 @@ int main(int argc, char **argv)
     /* check if column is completely light or not */
     col = UNKNOWN;
     found_pixels = 0;
+    int min_h = h;
     for(j=0; j<h; j++) {
       imlib_image_query_pixel(i, j, &color);
       lum = get_lum(&color, lt);
       if(is_pixel_set(lum, thresh)) /* dark */ {
         found_pixels++;
+        if (j < min_h) {
+          min_h = j;
+        }
         if(found_pixels > ignore_pixels) {
           /* 1 dark pixels darken the whole column */
           col = (ssocr_foreground == SSOCR_BLACK) ? DARK : LIGHT;
@@ -985,6 +989,14 @@ int main(int argc, char **argv)
         col = (ssocr_foreground == SSOCR_BLACK) ? LIGHT : DARK;
       }
     }
+
+    //HACKS
+    //printf("%d found pixels %d %d\n", i, found_pixels, min_h);
+    //filter out the decimal point
+    if (found_pixels <= 5 && min_h >= h - 5) {
+        col = (ssocr_foreground == SSOCR_BLACK) ? LIGHT : DARK;
+    }
+
     /* save digit position and draw partition line for DEBUG */
     if((state == ((ssocr_foreground == SSOCR_BLACK) ? FIND_DARK : FIND_LIGHT))
         && (col == ((ssocr_foreground == SSOCR_BLACK) ? DARK : LIGHT))) {
