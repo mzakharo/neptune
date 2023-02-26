@@ -32,8 +32,6 @@ def on_message(client, userdata, msg):
     print(result, filename)
     if args.dump:
         cv2.imwrite(filename, img)
-    if args.nopublish:
-        return
     try:
         if len(result) == 9:
             consumption = int(result) / 10
@@ -41,7 +39,8 @@ def on_message(client, userdata, msg):
             if 0 <= (consumption-prev) < 50:
                 data = json.dumps(dict(volume=consumption))
                 print('publish', data)
-                client.publish("neptune/status", data)
+                if not args.nopublish:
+                    client.publish("neptune/status", data)
             prev = consumption
     except Exception as e:
         print(e)
