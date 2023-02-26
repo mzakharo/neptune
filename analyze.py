@@ -42,8 +42,8 @@ def analyze(img, show=False):
     '''
     y0 = 160
     y1 = 220
-    x0 = 50
-    x1 = 390
+    x0 = 70
+    x1 = 410
 
     #kernel = np.ones((2, 2), np.uint8)
     #img = cv2.erode(img, kernel, iterations=1)
