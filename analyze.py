@@ -22,7 +22,7 @@ def analyze(img, show=False):
 
     img = cv2.medianBlur(img, 3)
     img = cv2.bilateralFilter(img, 27, 20 , 24)
-    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 55, 19)
+    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 57, 19)
 
     '''
     import easyocr
