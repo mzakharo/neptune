@@ -48,7 +48,7 @@ def ocr(img, show=False, debug=False):
             #print(fname)
             cv2.imwrite(fname, img)
             try:
-                result = subprocess.check_output(['./ssocr',  '-d',  '-1',  '-i', '2', fname])
+                result = subprocess.check_output(['./ssocr',  '-d',  '-1',  '-i', '1', fname])
             except Exception as e:
                 print(e)
                 return f"undecoded-{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}", img
