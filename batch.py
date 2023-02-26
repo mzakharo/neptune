@@ -9,7 +9,7 @@ def test(img_file):
     img = cv2.imread(img_file)
     result, img = ocr(img)
     ret = True
-    if len(result) == 9:
+    if len(result) == 9 and result.startswith('00240'):
         try:
             result = int(result)
             ret = False
