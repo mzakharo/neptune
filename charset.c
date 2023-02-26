@@ -71,7 +71,7 @@ void init_charset(charset_t cs)
       charset_array[D_SEVEN] = '7';
       charset_array[D_ALTSEVEN] = '7';
       charset_array[D_EIGHT] = '8';
-      charset_array[D_NINE] = '9';
+      //charset_array[D_NINE] = '9';
       charset_array[D_ALTNINE] = '9';
       charset_array[D_DECIMAL] = '.';
       charset_array[D_MINUS] = '-';
@@ -104,7 +104,7 @@ void init_charset(charset_t cs)
       charset_array[D_SEVEN] = '7';
       charset_array[D_ALTSEVEN] = '7';
       charset_array[D_EIGHT] = '8';
-      charset_array[D_NINE] = '9';
+      //charset_array[D_NINE] = '9';
       charset_array[D_ALTNINE] = '9';
       break;
     case CS_DECIMAL:
@@ -119,7 +119,7 @@ void init_charset(charset_t cs)
       charset_array[D_SEVEN] = '7';
       charset_array[D_ALTSEVEN] = '7';
       charset_array[D_EIGHT] = '8';
-      charset_array[D_NINE] = '9';
+      //charset_array[D_NINE] = '9';
       charset_array[D_ALTNINE] = '9';
       charset_array[D_DECIMAL] = '.';
       charset_array[D_MINUS] = '-';
@@ -135,7 +135,7 @@ void init_charset(charset_t cs)
       charset_array[D_SEVEN] = '7';
       charset_array[D_ALTSEVEN] = '7';
       charset_array[D_EIGHT] = '8';
-      charset_array[D_NINE] = '9';
+      //charset_array[D_NINE] = '9';
       charset_array[D_ALTNINE] = '9';
       charset_array[D_DECIMAL] = '.';
       charset_array[D_MINUS] = '-';
@@ -159,7 +159,7 @@ void init_charset(charset_t cs)
       charset_array[D_TT_WRONG_SEVEN_1] = '7';
       charset_array[D_TT_WRONG_SEVEN_2] = '7';
       charset_array[D_EIGHT] = '8';
-      charset_array[D_NINE] = '9';
+      //charset_array[D_NINE] = '9';
       charset_array[D_MINUS] = '-';
       charset_array[D_HEX_A] = 'a';
       charset_array[D_HEX_b] = 'b';
