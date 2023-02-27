@@ -13,12 +13,13 @@ def test(img_file):
     parse_err, _ = parse(result)
     err = ocr_err or parse_err
     print(err, result, img_file)
-    return err
+    return err, result, img_file
 
 if __name__ == '__main__':
-    #for img_file in sorted(files):
-    #    test(img_file)
+    #vals = [test(img_file) for img_file in sorted(files)]
     with multiprocessing.Pool(4) as pool:
         vals = pool.map(test, files)
-        print(sum(vals))
+    vals = sorted(vals, key=lambda x: x[1])
+    [print(v) for v in vals]
+    print(sum([v[0] for v in vals]))
 
