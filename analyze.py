@@ -1,9 +1,9 @@
 import cv2
 import numpy as np
 import os
-import imutils
+#import imutils
 import datetime
-from scipy import ndimage
+#from scipy import ndimage
 import tempfile
 import subprocess
 import sys
@@ -21,8 +21,9 @@ def analyze(img, show=False):
     #img = cv2.threshold(img, 110, 255, cv2.THRESH_TOZERO)[1]
 
     #img = cv2.medianBlur(img, 3)
-    img = cv2.bilateralFilter(img, 11, 17 , 17)
-    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 53, 13)
+    img = cv2.GaussianBlur(img, (5,5), 0)
+    #img = cv2.bilateralFilter(img, 11, 17 , 17)
+    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 53, 27)
 
     '''
     import easyocr
@@ -40,17 +41,19 @@ def analyze(img, show=False):
             print(y0, y1, x0 , x1)
             break
     '''
-    y0 = 160
-    y1 = 220
-    x0 = 70
-    x1 = 410
+    #'''
+    x0 = 30
+    y0 = 315
+    x1 = x0 + 410 - 70
+    y1 = y0 + 220 - 160
+    #'''
 
     #kernel = np.ones((2, 2), np.uint8)
     #img = cv2.erode(img, kernel, iterations=1)
     #img = cv2.Canny(img,1,35)
     #img = cv2.GaussianBlur(img, (1,1), 0)
 
-    img = ndimage.rotate(img, -0.8)
+    #img = ndimage.rotate(img, -0.8)
     img = img[y0:y1,x0:x1]
 
     if show:
@@ -96,7 +99,7 @@ def ocr(img, show=False, debug=False):
             err = False
             try:
                 _debug = '-Dfoo.png' if debug else ''
-                cmd = f'./ssocr -d -1 -i 0 -n 3 {_debug} {fname}'
+                cmd = f'./ssocr -d -1 -i 0 -n 5 {_debug} {fname}'
                 result = subprocess.check_output(shlex.split(cmd))
             except subprocess.CalledProcessError as exc:                                                                                                   
                 err = True

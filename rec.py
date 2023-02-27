@@ -31,7 +31,7 @@ def on_message(client, userdata, msg):
     parse_err, consumption = parse(result)
     err = ocr_err or parse_err
     filename = f'data/{result}.png'
-    print(result, filename)
+    print('err:', err, 'result:', result, filename)
     if args.dump or (err and args.dump_err):
         cv2.imwrite(filename, img)
     if err:
