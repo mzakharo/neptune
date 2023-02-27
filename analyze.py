@@ -24,7 +24,7 @@ def analyze(img, show=False):
     #img = cv2.bilateralFilter(img, 11, 17 , 17)
 
     img = cv2.GaussianBlur(img, (3,5), 0)
-    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 53, 27)
+    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 93, 25)
 
     '''
     import easyocr
