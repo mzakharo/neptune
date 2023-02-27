@@ -968,6 +968,7 @@ int main(int argc, char **argv)
   /* horizontal partition */
   state = (ssocr_foreground == SSOCR_BLACK) ? FIND_DARK : FIND_LIGHT;
   d = 0;
+  int spaces = 0;
   for(i=0; i<w; i++) {
     /* check if column is completely light or not */
     col = UNKNOWN;
@@ -990,11 +991,16 @@ int main(int argc, char **argv)
       }
     }
 
-    //HACKS
+    //HACKS - ignore decimal points in the image
     //printf("%d found pixels %d %d\n", i, found_pixels, min_h);
     //filter out the decimal point
     if (found_pixels <= 5 && min_h >= h - 5) {
         col = (ssocr_foreground == SSOCR_BLACK) ? LIGHT : DARK;
+    }
+
+    //light 
+    if (col == (ssocr_foreground == SSOCR_BLACK) ? LIGHT : DARK) {
+      spaces += 1;
     }
 
     /* save digit position and draw partition line for DEBUG */
@@ -1026,6 +1032,30 @@ int main(int argc, char **argv)
       /* end of digit */
       digits[d].x2 = i;
       digits[d].y2 = h-1;
+
+      //HACKS - ignore too narrow pixels
+      int width = digits[d].x2 - digits[d].x1;
+      //fprintf(stderr, "width=%d\n", width);
+      if (width < 4) {
+        continue;
+      }
+
+      //HACKS - merge pixels with small spaces
+      //fprintf(stderr, "spaces=%d\n", spaces);
+      if (spaces <= 2 && d > 0) {
+        digits[d-1].x2 = i;
+        digits[d-1].y2 = h-1;
+        state = (ssocr_foreground == SSOCR_BLACK) ? FIND_DARK : FIND_LIGHT;
+        if(flags & USE_DEBUG_IMAGE) {
+          imlib_context_set_image(debug_image);
+          imlib_context_set_color(0,0,255,255); /* blue line for end of digit */
+          imlib_image_draw_line(i,0,i,h-1,0);
+          imlib_context_set_image(image);
+        }
+        continue;
+      }
+      spaces = 0;
+
       d++;
       if(flags & USE_DEBUG_IMAGE) {
         imlib_context_set_image(debug_image);
