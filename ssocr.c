@@ -1360,7 +1360,10 @@ int main(int argc, char **argv)
                               (digits[d].x1 + digits[d].x2) / 2 + 1,
                               quarter, (digits[d].x2 - digits[d].x1) / 2 - 1,
                               HORIZONTAL, d_color, thresh, lt, flags);
-      if (found_pixels >= need_pixels) {
+      //HACK: broken screen -> need more pixels to count this one
+      int need = (d == 5) ? need_pixels + 3 : need_pixels;
+      if (found_pixels >= need) {
+        //fprintf(stderr, "found=%d\n", found_pixels);
         digits[d].digit |= VERT_RIGHT_UP; /* add upper right segment */
       }
       /* check lower vertical segments (horizontal scan, y == three_quarters) */
