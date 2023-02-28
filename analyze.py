@@ -39,9 +39,7 @@ def analyze(img, show=False):
     y1 = y0 + 220 - 160
     #'''
 
-    #kernel = np.ones((2, 2), np.uint8)
-    #img = cv2.erode(img, kernel, iterations=1)
-    #img = cv2.Canny(img,1,35)
+   #img = cv2.Canny(img,1,35)
     #img = cv2.GaussianBlur(img, (1,1), 0)
 
     #img = ndimage.rotate(img, -0.8)
@@ -53,8 +51,14 @@ def analyze(img, show=False):
     #img = cv2.medianBlur(img, 3)
     #img = cv2.bilateralFilter(img, 11, 17 , 17)
 
-    img = cv2.GaussianBlur(img, (5,5), 0)
-    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 61, 17)
+    img = cv2.GaussianBlur(img, (9,9), 0)
+
+    #kernel = np.ones((3, 3), np.uint8)
+    #img = cv2.dilate(img, kernel, iterations=1) #get rid of noise
+    #img = cv2.erode(img, kernel, iterations=1)  #get back original without the noise
+ 
+    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 71, 11)
+
 
     if show:
         cv2.imshow('image', img)
