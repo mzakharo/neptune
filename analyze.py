@@ -53,8 +53,8 @@ def analyze(img, show=False):
     #img = cv2.medianBlur(img, 3)
     #img = cv2.bilateralFilter(img, 11, 17 , 17)
 
-    img = cv2.GaussianBlur(img, (3,5), 0)
-    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 41, 19)
+    img = cv2.GaussianBlur(img, (5,5), 0)
+    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 61, 17)
 
     if show:
         cv2.imshow('image', img)
@@ -99,7 +99,7 @@ def ocr(img, show=False, debug=False):
             err = False
             try:
                 _debug = '-Dfoo.png' if debug else ''
-                cmd = f'./ssocr -d -1 -i 0 -n 2 {_debug} {fname}'
+                cmd = f'./ssocr -d -1 -i 1 -n 2 {_debug} {fname}'
                 result = subprocess.check_output(shlex.split(cmd))
             except subprocess.CalledProcessError as exc:                                                                                                   
                 err = True
