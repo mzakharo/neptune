@@ -994,7 +994,7 @@ int main(int argc, char **argv)
     //HACKS - ignore decimal points in the image
     //printf("%d found pixels %d %d\n", i, found_pixels, min_h);
     //filter out the decimal point
-    if (found_pixels <= 5 && min_h >= h - 5) {
+    if (found_pixels <= 7 && min_h >= h - 7) {
         col = (ssocr_foreground == SSOCR_BLACK) ? LIGHT : DARK;
     }
 
