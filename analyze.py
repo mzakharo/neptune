@@ -16,16 +16,6 @@ def analyze(img, show=False):
 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-
-    #img = cv2.Canny(img, 100, 200)
-    #img = cv2.threshold(img, 110, 255, cv2.THRESH_TOZERO)[1]
-
-    #img = cv2.medianBlur(img, 3)
-    #img = cv2.bilateralFilter(img, 11, 17 , 17)
-
-    img = cv2.GaussianBlur(img, (3,5), 0)
-    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 63, 27)
-
     '''
     import easyocr
     reader = easyocr.Reader(['en'])
@@ -56,6 +46,15 @@ def analyze(img, show=False):
 
     #img = ndimage.rotate(img, -0.8)
     img = img[y0:y1,x0:x1]
+
+    #img = cv2.Canny(img, 100, 200)
+    #img = cv2.threshold(img, 110, 255, cv2.THRESH_TOZERO)[1]
+
+    #img = cv2.medianBlur(img, 3)
+    #img = cv2.bilateralFilter(img, 11, 17 , 17)
+
+    img = cv2.GaussianBlur(img, (3,5), 0)
+    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 41, 19)
 
     if show:
         cv2.imshow('image', img)
@@ -100,7 +99,7 @@ def ocr(img, show=False, debug=False):
             err = False
             try:
                 _debug = '-Dfoo.png' if debug else ''
-                cmd = f'./ssocr -d -1 -i 2 -n 2 {_debug} {fname}'
+                cmd = f'./ssocr -d -1 -i 0 -n 2 {_debug} {fname}'
                 result = subprocess.check_output(shlex.split(cmd))
             except subprocess.CalledProcessError as exc:                                                                                                   
                 err = True
