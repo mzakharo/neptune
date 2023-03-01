@@ -16,29 +16,26 @@ def analyze(img, show=False):
 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    '''
-    import easyocr
-    reader = easyocr.Reader(['en'])
-    bounds = reader.readtext(img)
-    for bound in bounds:
-        if bound[1] == 'LPM':
-            print(bound[0][1])
-            x = bound[0][1][0] #383
-            y = bound[0][1][1] #244
-            x1 = x + 7
-            x0 = x1 - (390-50)
-            y1 = y - 24
-            y0 = y1 - (220-160)
-            print(y0, y1, x0 , x1)
-            break
-    '''
-    #'''
-    x0 = 30
-    y0 = 315
+    x0 = 33
+    y0 = 311
+
+    dynamic = False
+    #dynamic = True
+    if dynamic:
+        import easyocr
+        reader = easyocr.Reader(['en'])
+        bounds = reader.readtext(img)
+        for bound in bounds:
+            if bound[1] == '(LPM)':
+                x = bound[0][1][0] #383
+                y = bound[0][1][1] #244
+                x0 = x - 387 + 30
+                y0 = y - 410 + 315
+                print('coords', x0, y0)
+                break
+
     x1 = x0 + 410 - 70
     y1 = y0 + 220 - 160
-    #'''
-
    #img = cv2.Canny(img,1,35)
     #img = cv2.GaussianBlur(img, (1,1), 0)
 
