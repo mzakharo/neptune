@@ -10,9 +10,12 @@ import sys
 import shlex
 
 def analyze(img, show=False):
-    # Optimizing the image
+    debug = False
 
     #img = imutils.resize(img, height=500)
+
+    if debug:
+        output = img.copy()
 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -27,17 +30,52 @@ def analyze(img, show=False):
         bounds = reader.readtext(img)
         for bound in bounds:
             if bound[1] == '(LPM)':
-                x = bound[0][1][0] #383
-                y = bound[0][1][1] #244
+                x = bound[0][1][0]
+                y = bound[0][1][1]
                 x0 = x - 387 + 30
                 y0 = y - 410 + 315
                 print('coords', x0, y0)
                 break
 
+
+    
+    # detect circles in the image -> This detects ® in the image.
+    gray = img
+    rows = gray.shape[0]
+    circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1, rows / 8,
+                               param1=250, param2=25,
+                               minRadius=9, maxRadius=13)
+
+
+    # ensure at least some circles were found
+    if circles is not None:
+        # convert the (x, y) coordinates and radius of the circles to integers
+        circles = np.round(circles[0, :]).astype("int")
+        circles = sorted(list(circles), key=lambda x : x[0]) #always pick the right-most circle
+        if debug:
+            print('circles', circles)
+        # loop over the (x, y) coordinates and radius of the circles
+        for (x, y, r) in circles:
+            x0 = x - 302 + 31
+            y0 = y - 462 + 315
+
+            # draw the circle in the output image, then draw a rectangle
+            # corresponding to the center of the circle
+            if debug:
+                cv2.circle(output, (x, y), r, (0, 255, 0), 4)
+                cv2.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)
+        # show the output image
+
+    if debug:
+        cv2.imshow("output", output)
+        cv2.waitKey(0)
+
+
     x1 = x0 + 410 - 70
     y1 = y0 + 220 - 160
-   #img = cv2.Canny(img,1,35)
     #img = cv2.GaussianBlur(img, (1,1), 0)
+
+    #img = cv2.Canny(img, 350, 400)
 
     #img = ndimage.rotate(img, -0.8)
     img = img[y0:y1,x0:x1]
