@@ -65,7 +65,7 @@ def ocr(img, show=False, debug=False):
         err = False
         try:
             _debug = '-Dfoo.png' if debug else ''
-            cmd = f'ssocr -d -1 -i 1 -n 2 {_debug} {fname}'
+            cmd = f'./ssocr -d -1 -i 1 -n 2 {_debug} {fname}'
             result = subprocess.check_output(shlex.split(cmd))
         except subprocess.CalledProcessError as exc:                                                                                                   
             err = True

@@ -27,7 +27,7 @@ prev = 0
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     with tempfile.NamedTemporaryFile(suffix='.jpeg') as tmp:
-        img_file = tmp.fname
+        img_file = tmp.name
         subprocess.check_output(shlex.split(f'libcamera-jpeg -n -t 1 -o {img_file}'))
         img_orig = cv2.imread(img_file)
         img_orig = cv2.rotate(img_orig, cv2.ROTATE_180)
