@@ -43,7 +43,7 @@ def on_message(client, userdata, msg):
             return
         global prev
         consumption = consumption / 10
-        if 0 <= (consumption-prev) < 50:
+        if True: #0 <= (consumption-prev) < 500:
             data = json.dumps(dict(volume=consumption))
             print('publish', not args.nopublish, data)
             if not args.nopublish:
