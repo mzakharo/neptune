@@ -7,9 +7,9 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=30
-ExecStart=/usr/bin/python3 -u /home/ubuntu/neptune/rec.py
-WorkingDirectory=/home/ubuntu/neptune
-User=ubuntu
+ExecStart=/usr/bin/python3 -u /home/pi/neptune/rec.py
+WorkingDirectory=/home/pi/neptune
+User=pi
 
 
 [Install]
