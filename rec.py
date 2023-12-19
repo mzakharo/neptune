@@ -43,15 +43,12 @@ def on_message(client, userdata, msg):
             ocr_err, result, _ = ocr(img)
             parse_err, consumption = parse(result)
             err = ocr_err or parse_err
-            print('err', err, 'consumption', consumption)
+            filename = f'data/{result}.jpeg'
+            print('err:', err, 'result:', result, filename)
+            if args.dump or (err and args.dump_err):
+                cv2.imwrite(filename, img_orig)
             if not err:
                 break
-            err = True
-
-        filename = f'data/{result}.jpeg'
-        print('err:', err, 'result:', result, filename)
-        if args.dump or (err and args.dump_err):
-            cv2.imwrite(filename, img_orig)
     finally:
         os.remove(img_file)
     if err:
