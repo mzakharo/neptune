@@ -52,8 +52,8 @@ def on_message(client, userdata, msg):
             print('err:', err, 'result:', result, filename, 'took', tt)
             if args.dump or (err and args.dump_err):
                 cv2.imwrite(filename, img_orig)
-            if not err:
-                break
+            #if not err:
+            #    break
     finally:
         picam2.stop()
         picam2.close()
