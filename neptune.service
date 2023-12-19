@@ -7,7 +7,7 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=30
-ExecStart=/usr/bin/python3 -u /home/pi/neptune/rec.py
+ExecStart=/usr/bin/python3 -u /home/pi/neptune/rec.py --dump
 WorkingDirectory=/home/pi/neptune
 User=pi
 
