@@ -51,6 +51,8 @@ def parse(result):
 
 def ocr(img, show=False, debug=False):
     circles = find_circles(img)
+    if circles is None:
+        return (True, 'no_circles', img)
     img = simplify(circles, img)
 
 
