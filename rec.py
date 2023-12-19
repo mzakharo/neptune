@@ -39,7 +39,12 @@ def on_message(client, userdata, msg):
             tx = time.time()
             img_orig_rot = cv2.rotate(img_orig, cv2.ROTATE_180)
             img = cv2.cvtColor(img_orig_rot, cv2.COLOR_BGR2GRAY)
-            ocr_err, result, _ = ocr(img)
+            try: 
+                ocr_err, result, _ = ocr(img)
+            except Exception as e:
+                print(e)
+                ocr_err = True
+                result = 'ocr_exception'
             parse_err, consumption = parse(result)
             tt = time.time() - tx
             err = ocr_err or parse_err
