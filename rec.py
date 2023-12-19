@@ -33,7 +33,7 @@ def on_message(client, userdata, msg):
     picam2.configure(picam2.create_preview_configuration(main={"format": 'XRGB8888', "size": (1640, 1232)}))
     picam2.start()
     try:
-        while time.time() - t0 < 30:
+        while time.time() - t0 < 15:
             img_orig = picam2.capture_array()
 
             tx = time.time()
