@@ -35,13 +35,16 @@ def on_message(client, userdata, msg):
     try:
         while time.time() - t0 < 30:
             img_orig = picam2.capture_array()
+
+            tx = time.time()
             img_orig_rot = cv2.rotate(img_orig, cv2.ROTATE_180)
             img = cv2.cvtColor(img_orig_rot, cv2.COLOR_BGR2GRAY)
             ocr_err, result, _ = ocr(img)
             parse_err, consumption = parse(result)
+            tt = time.time() - tx
             err = ocr_err or parse_err
             filename = f'data/{result}.jpeg'
-            print('err:', err, 'result:', result, filename)
+            print('err:', err, 'result:', result, filename, 'took', tt)
             if args.dump or (err and args.dump_err):
                 cv2.imwrite(filename, img_orig)
             if not err:
