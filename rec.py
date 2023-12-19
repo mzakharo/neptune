@@ -3,11 +3,9 @@ from analyze import ocr, parse
 import cv2
 import json
 import argparse
-import shlex
-import tempfile
-import subprocess
 import time
-import os
+from picamera2 import Picamera2
+
 
 
 parser = argparse.ArgumentParser()
@@ -31,13 +29,12 @@ prev = 0
 def on_message(client, userdata, msg):
 
     t0 = time.time()
-    tmp = tempfile.NamedTemporaryFile(suffix='.jpeg', delete=False)
-    img_file = tmp.name
-    tmp.close()
+    picam2 = Picamera2()
+    picam2.configure(picam2.create_preview_configuration(main={"format": 'XRGB8888', "size": (3280, 2464)}))
+    picam2.start()
     try:
         while time.time() - t0 < 30:
-            subprocess.check_output(shlex.split(f'libcamera-jpeg -n -t 1 -o {img_file}'), stderr=subprocess.DEVNULL)
-            img_orig = cv2.imread(img_file)
+            img_orig = picam2.capture_array()
             img_orig_rot = cv2.rotate(img_orig, cv2.ROTATE_180)
             img = cv2.cvtColor(img_orig_rot, cv2.COLOR_BGR2GRAY)
             ocr_err, result, _ = ocr(img)
@@ -50,7 +47,8 @@ def on_message(client, userdata, msg):
             if not err:
                 break
     finally:
-        os.remove(img_file)
+        picam2.stop()
+        picam2.close()
     if err:
         return
     global prev
