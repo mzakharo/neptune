@@ -48,6 +48,7 @@ def on_message(client, userdata, msg):
                 (consumption, count) = Counter(consumptions).most_common(1)[0]
                 if count >= 3:
                     break
+            err = True
     
     filename = f'data/{result}.png'
     print('err:', err, 'result:', result, filename)
