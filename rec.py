@@ -46,7 +46,7 @@ def on_message(client, userdata, msg):
             if not err:
                 consumptions.append(consumption)        
                 (consumption, count) = Counter(consumptions).most_common(1)[0]
-                if count > 3:
+                if count >= 3:
                     break
     
     filename = f'data/{result}.png'
