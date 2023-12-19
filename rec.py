@@ -7,7 +7,6 @@ import shlex
 import tempfile
 import subprocess
 import time
-from collections import Counter
 
 
 parser = argparse.ArgumentParser()
@@ -31,29 +30,29 @@ prev = 0
 def on_message(client, userdata, msg):
 
     t0 = time.time()
-    consumptions = []
-    while time.time() - t0 < 30:
-        with tempfile.NamedTemporaryFile(suffix='.jpeg') as tmp:
-            img_file = tmp.name
+    tmp = tempfile.NamedTemporaryFile(suffix='.jpeg', delete=False)
+    img_file = tmp.name
+    tmp.close()
+    try:
+        while time.time() - t0 < 30:
             subprocess.check_output(shlex.split(f'libcamera-jpeg -n -t 1 -o {img_file}'), stderr=subprocess.DEVNULL)
             img_orig = cv2.imread(img_file)
-            img_orig = cv2.rotate(img_orig, cv2.ROTATE_180)
-            img = cv2.cvtColor(img_orig, cv2.COLOR_BGR2GRAY)
+            img_orig_rot = cv2.rotate(img_orig, cv2.ROTATE_180)
+            img = cv2.cvtColor(img_orig_rot, cv2.COLOR_BGR2GRAY)
             ocr_err, result, _ = ocr(img)
             parse_err, consumption = parse(result)
             err = ocr_err or parse_err
             print('err', err, 'consumption', consumption)
             if not err:
-                consumptions.append(consumption)        
-                (consumption, count) = Counter(consumptions).most_common(1)[0]
-                if count >= 3:
-                    break
+                break
             err = True
-    
-    filename = f'data/{result}.png'
-    print('err:', err, 'result:', result, filename)
-    if args.dump or (err and args.dump_err):
-        cv2.imwrite(filename, img)
+
+        filename = f'data/{result}.jpeg'
+        print('err:', err, 'result:', result, filename)
+        if args.dump or (err and args.dump_err):
+            cv2.imwrite(filename, img_orig)
+    finally:
+        os.remove(img_file)
     if err:
         return
     global prev
