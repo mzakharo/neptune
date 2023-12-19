@@ -101,8 +101,8 @@
 /* a decimal point (or thousands separator) is recognized by height less
  * than <maximum digit height> / DEC_H_RATIO and width less than
  * <maximum digit width> / DEC_W_RATIO */
-#define DEC_H_RATIO 5
-#define DEC_W_RATIO 2 /* needs to work with just ones in the display, too */
+#define DEC_H_RATIO 1  //HACK was 5
+#define DEC_W_RATIO 1  //HACK was 2 /* needs to work with just ones in the display, too */
 
 /* a one is recognized by a height/width ratio > ONE_RATIO (as ints) */
 #define ONE_RATIO 3

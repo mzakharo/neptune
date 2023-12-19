@@ -28,12 +28,14 @@ def simplify(circles, img):
     new_image = cv2.warpAffine(img, rot_mat, (col,row))
 
     x0 = circles[0][0] -680
-    y0 = circles[0][1] - 35
+    y0 = circles[0][1] - 33
+    y0 = circles[0][1] - 40
     x1 = x0 + 550
-    y1 = y0 + 100
-
+    #y1 = y0 + 90
+    y1 = y0 + 105
+    
     img2 = new_image[y0:y1,x0:x1]
-    img2 = cv2.GaussianBlur(img2, (7,7), 0) 
+    img2 = cv2.GaussianBlur(img2, (11,11), 0) 
     img2 = cv2.adaptiveThreshold(img2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 71, 11)
     return img2
 
@@ -67,7 +69,7 @@ def ocr(img, show=False, debug=False):
         cv2.imwrite(fname, img)
         err = False
         try:
-            _debug = '-Dfoo.png' if debug else ''
+            _debug = '-Dfoo.png -P' if debug else ''
             cmd = f'./ssocr -d -1 -i 1 -n 2 {_debug} {fname}'
             result = subprocess.check_output(shlex.split(cmd))
         except subprocess.CalledProcessError as exc:                                                                                                   

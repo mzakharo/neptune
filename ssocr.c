@@ -994,9 +994,11 @@ int main(int argc, char **argv)
     //HACKS - ignore decimal points in the image
     //printf("%d found pixels %d %d\n", i, found_pixels, min_h);
     //filter out the decimal point
+    #if 0
     if (found_pixels <= 7 && min_h >= h - 7) {
         col = (ssocr_foreground == SSOCR_BLACK) ? LIGHT : DARK;
     }
+    #endif
 
     //light 
     if (col == (ssocr_foreground == SSOCR_BLACK) ? LIGHT : DARK) {
@@ -1034,6 +1036,7 @@ int main(int argc, char **argv)
       digits[d].y2 = h-1;
 
       //HACKS - ignore too narrow pixels
+     #if 0
       int width = digits[d].x2 - digits[d].x1;
       //fprintf(stderr, "width=%d\n", width);
       if (width < 4) {
@@ -1042,6 +1045,7 @@ int main(int argc, char **argv)
 
       //HACKS - merge pixels with small spaces
       //fprintf(stderr, "spaces=%d\n", spaces);
+ 
       if (spaces <= 2 && d > 0) {
         digits[d-1].x2 = i;
         digits[d-1].y2 = h-1;
@@ -1054,6 +1058,7 @@ int main(int argc, char **argv)
         }
         continue;
       }
+      #endif
       spaces = 0;
 
       d++;
