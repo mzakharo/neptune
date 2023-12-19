@@ -28,12 +28,12 @@ def simplify(circles, img):
     new_image = cv2.warpAffine(img, rot_mat, (col,row))
 
     x0 = circles[0][0] - 1360
-    y0 = circles[0][1] - 90
+    y0 = circles[0][1] - 75
     x1 = x0 + 1100 
-    y1 = y0 + 215
+    y1 = y0 + 200
 
     img2 = new_image[y0:y1,x0:x1]
-    img2 = cv2.GaussianBlur(img2, (9,9), 0) 
+    img2 = cv2.GaussianBlur(img2, (21,21), 0) 
     img2 = cv2.adaptiveThreshold(img2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 71, 11)
     return img2
 
@@ -52,7 +52,7 @@ def parse(result):
 def ocr(img, show=False, debug=False):
     circles = find_circles(img)
     if circles is None:
-        return (True, 'no_circles', img)
+        return (True, 'ref_error', img)
     img = simplify(circles, img)
 
 
@@ -71,7 +71,7 @@ def ocr(img, show=False, debug=False):
             result = subprocess.check_output(shlex.split(cmd))
         except subprocess.CalledProcessError as exc:                                                                                                   
             err = True
-            result = exc.output
+            result = 'ocr_error'
         result = result.decode().strip()
         if debug:
             print('ssocr', result)
