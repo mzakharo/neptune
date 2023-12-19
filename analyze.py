@@ -43,7 +43,8 @@ def parse(result):
     if len(result) == 9:
         try:
             result = int(result)
-            err = True if result in[888888888, 88888888, 8888888] else False
+            err = True if result in[888888888, 88888888, 8888888] else False # when LCD is booting up
+            err = True if result >= 100000000 else err  #when the screen switches to another mode
         except:
             pass
     return err, result
