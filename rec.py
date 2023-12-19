@@ -45,7 +45,7 @@ def on_message(client, userdata, msg):
             print('err', err, 'consumption', consumption)
             if not err:
                 consumptions.append(consumption)        
-                (consumption, count) = Counter(consumptions).most_common(1)
+                (consumption, count) = Counter(consumptions).most_common(1)[0]
                 if count > 3:
                     break
     
