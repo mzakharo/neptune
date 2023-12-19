@@ -43,7 +43,7 @@ def parse(result):
     if len(result) == 9:
         try:
             result = int(result)
-            err = False
+            err = True if result == 888888888 else False
         except:
             pass
     return err, result
