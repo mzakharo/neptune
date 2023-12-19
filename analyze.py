@@ -62,7 +62,7 @@ def ocr(img, show=False, debug=False):
     tmp.close()    
     #fname = 'rec.png'
     try:        
-        print(fname)
+        #print(fname)
         cv2.imwrite(fname, img)
         err = False
         try:
@@ -76,6 +76,8 @@ def ocr(img, show=False, debug=False):
         if debug:
             print('ssocr', result)
         result = result.replace('.', '')
+        if len(result) == 0:
+            result = 'res_error'
         return err, result, img
     finally:
         os.remove(fname)
