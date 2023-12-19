@@ -13,8 +13,8 @@ def find_circles(img):
     gray = img
     rows = gray.shape[0]
     circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1, rows / 8,
-                                param1=50, param2=50,
-                                minRadius=15, maxRadius=40)
+                                param1=50, param2=25,
+                                minRadius=7, maxRadius=15)
     if circles is not None:
         circles = np.round(circles[0, :]).astype("int")
     return circles
@@ -27,13 +27,13 @@ def simplify(circles, img):
     rot_mat = cv2.getRotationMatrix2D(center,angle,1.0)
     new_image = cv2.warpAffine(img, rot_mat, (col,row))
 
-    x0 = circles[0][0] - 1360
-    y0 = circles[0][1] - 75
-    x1 = x0 + 1100 
-    y1 = y0 + 200
+    x0 = circles[0][0] -680
+    y0 = circles[0][1] - 35
+    x1 = x0 + 550
+    y1 = y0 + 100
 
     img2 = new_image[y0:y1,x0:x1]
-    img2 = cv2.GaussianBlur(img2, (21,21), 0) 
+    img2 = cv2.GaussianBlur(img2, (7,7), 0) 
     img2 = cv2.adaptiveThreshold(img2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 71, 11)
     return img2
 
