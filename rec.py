@@ -30,7 +30,7 @@ def on_message(client, userdata, msg):
 
     t0 = time.time()
     picam2 = Picamera2()
-    picam2.configure(picam2.create_preview_configuration(main={"format": 'XRGB8888', "size": (640, 480)}))
+    picam2.configure(picam2.create_preview_configuration(main={"format": 'XRGB8888', "size": (1640, 1232)}))
     picam2.start()
     try:
         while time.time() - t0 < 30:

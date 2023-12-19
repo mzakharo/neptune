@@ -71,7 +71,7 @@ def ocr(img, show=False, debug=False):
             result = subprocess.check_output(shlex.split(cmd))
         except subprocess.CalledProcessError as exc:                                                                                                   
             err = True
-            result = 'ocr_error'
+            result = b'ocr_error'
         result = result.decode().strip()
         if debug:
             print('ssocr', result)
