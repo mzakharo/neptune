@@ -38,6 +38,7 @@ class Worker(threading.Thread):
             if img_orig is None:
                 start = True                
                 consumptions = []
+                continue
             if not start:
                 continue
             tx = time.time()
