@@ -84,11 +84,11 @@ def on_message(client, q, msg):
     picam2.start()
     q.put(None)  
     while time.time() - t0 < 15:
-        img_orig = picam2.capture_array()
-        q.put(img_orig)
+        q.put(picam2.capture_array())
         time.sleep(0)
     picam2.stop()
     picam2.close()
+    print("cam done")
     
 
 q = queue.Queue()
