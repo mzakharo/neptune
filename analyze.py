@@ -14,9 +14,10 @@ def find_circles(img):
     rows = gray.shape[0]
     circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1, rows / 8,
                                 param1=50, param2=25,
-                                minRadius=7, maxRadius=15)
+                                minRadius=12, maxRadius=17)
     if circles is not None:
         circles = np.round(circles[0, :]).astype("int")
+        circles = sorted(list(circles), key=lambda x : x[0], reverse=True) #always pick the right-most circle
     return circles
 
 
@@ -29,13 +30,13 @@ def simplify(circles, img):
 
     x0 = circles[0][0] -680
     y0 = circles[0][1] - 33
-    y0 = circles[0][1] - 40
+    y0 = circles[0][1] - 35
     x1 = x0 + 550
     #y1 = y0 + 90
-    y1 = y0 + 105
+    y1 = y0 + 100
     
     img2 = new_image[y0:y1,x0:x1]
-    img2 = cv2.GaussianBlur(img2, (11,11), 0) 
+    img2 = cv2.GaussianBlur(img2, (7,7), 0) 
     img2 = cv2.adaptiveThreshold(img2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 71, 11)
     return img2
 

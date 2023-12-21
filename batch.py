@@ -5,14 +5,18 @@ import multiprocessing
 import sys
 
 folder = sys.argv[1]
-files = glob(f'{folder}/*.png')
+files = glob(f'{folder}/*.jpeg')
 
 def test(img_file):
     img = cv2.imread(img_file)
+    img = cv2.rotate(img, cv2.ROTATE_180)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     ocr_err, result, img = ocr(img)
     parse_err, _ = parse(result)
     err = ocr_err or parse_err
-    print(err, result, img_file)
+    if result not in img_file:
+        err = True
+    #print(err, result, img_file)
     return err, result, img_file
 
 if __name__ == '__main__':

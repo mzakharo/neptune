@@ -1263,8 +1263,11 @@ int main(int argc, char **argv)
   }
 
   /* identify a decimal point (or thousands separator) by relative size */
-  if(flags & DEBUG_OUTPUT)
+  if(flags & DEBUG_OUTPUT) {
     fputs("looking for decimal points\n",stderr);
+    fprintf(stderr, "max_dig_h %d max_dig_w %d\n", max_dig_h, max_dig_w);
+  }
+  int skip_d = -1;
   for(d=0; d<number_of_digits; d++) {
     /* skip digits with zero width or height */
     if((digits[d].x1 == digits[d].x2) || (digits[d].y1 == digits[d].y2)) {
@@ -1275,13 +1278,29 @@ int main(int argc, char **argv)
     /* if height of a digit is less than 1/5 of the maximum digit height,
      * and its width is less than 1/2 of the maximum digit width (the widest
      * digit might be a one), assume it is a decimal point */
+    if(flags & DEBUG_OUTPUT)
+      fprintf(stderr, "%d: h %d w %d  rh %d rw %d\n", d, digits[d].y2 - digits[d].y1, digits[d].x2 - digits[d].x1, (max_dig_h / (digits[d].y2 - digits[d].y1)),  (max_dig_w / (digits[d].x2 - digits[d].x1)));
     if((digits[d].digit == D_UNKNOWN) &&
        (max_dig_h / (digits[d].y2 - digits[d].y1) > dec_h_ratio) &&
        (max_dig_w / (digits[d].x2 - digits[d].x1) > dec_w_ratio)) {
       digits[d].digit = D_DECIMAL;
-      if(flags & DEBUG_OUTPUT)
+
+      //HACKS: detect broken LCD segment
+      if (max_dig_h / (digits[d].y2 - digits[d].y1)  == max_dig_w / (digits[d].x2 - digits[d].x1)) {
+        skip_d = d;
+      }
+
+       if(flags & DEBUG_OUTPUT)
         fprintf(stderr, " digit %d is a decimal point\n", d);
     }
+  }
+  //HACKS: merge broken LCD segment with the next digit
+  if (skip_d != -1) {
+    digits[skip_d+1].x1 = digits[skip_d].x1;
+    for (d = skip_d; d < number_of_digits; d++) {    
+      memcpy(&digits[d], &digits[d+1], sizeof(digits[0]));
+    }
+    number_of_digits--;
   }
 
   /* identify a minus sign */
@@ -1319,6 +1338,7 @@ int main(int argc, char **argv)
         fprintf(stderr, " skipping digit %d with zero width or height\n", d);
       continue;
     }
+    
     /* skip already recognized digits */
     if(digits[d].digit == D_UNKNOWN) {
       int middle = (digits[d].x1 + digits[d].x2) / 2;
@@ -1366,8 +1386,8 @@ int main(int argc, char **argv)
                               quarter, (digits[d].x2 - digits[d].x1) / 2 - 1,
                               HORIZONTAL, d_color, thresh, lt, flags);
       //HACK: broken screen -> need more pixels to count this one
-      int need = (d == 5) ? need_pixels + 3 : need_pixels;
-      if (found_pixels >= need) {
+      //int need = (d == 5) ? need_pixels + 3 : need_pixels;
+      if (found_pixels >= need_pixels) {
         //fprintf(stderr, "found=%d\n", found_pixels);
         digits[d].digit |= VERT_RIGHT_UP; /* add upper right segment */
       }
