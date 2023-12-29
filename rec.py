@@ -8,6 +8,7 @@ from picamera2 import Picamera2
 import threading 
 import queue
 import collections
+import sys
 
 
 parser = argparse.ArgumentParser()
@@ -89,6 +90,7 @@ def on_message(client, q, msg):
     picam2.stop()
     picam2.close()
     print("cam done")
+    sys.exit(0)
     
 
 q = queue.Queue()
