@@ -8,7 +8,6 @@ from picamera2 import Picamera2
 import threading 
 import queue
 import collections
-import sys
 
 
 parser = argparse.ArgumentParser()
@@ -90,7 +89,7 @@ def on_message(client, q, msg):
     picam2.stop()
     picam2.close()
     print("cam done")
-    sys.exit(0)
+    client.disconnect()
     
 
 q = queue.Queue()
@@ -100,3 +99,4 @@ client.on_connect = on_connect
 client.on_message = on_message
 client.connect("nas.home.arpa")
 client.loop_forever()
+print('exit')
