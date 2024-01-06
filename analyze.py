@@ -29,11 +29,9 @@ def simplify(circles, img):
     new_image = cv2.warpAffine(img, rot_mat, (col,row))
 
     x0 = circles[0][0] -680
-    y0 = circles[0][1] - 33
-    y0 = circles[0][1] - 35
+    y0 = circles[0][1] - 25
     x1 = x0 + 550
-    #y1 = y0 + 90
-    y1 = y0 + 100
+    y1 = y0 + 90
     
     img2 = new_image[y0:y1,x0:x1]
     img2 = cv2.GaussianBlur(img2, (7,7), 0) 
