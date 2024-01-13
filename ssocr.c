@@ -991,14 +991,12 @@ int main(int argc, char **argv)
       }
     }
 
-    //HACKS - ignore decimal points in the image
+    //HACKS - ignore decimal points in the image - need this to to work with  merge pixesls with small spaces below
     //printf("%d found pixels %d %d\n", i, found_pixels, min_h);
     //filter out the decimal point
-    #if 0
     if (found_pixels <= 7 && min_h >= h - 7) {
         col = (ssocr_foreground == SSOCR_BLACK) ? LIGHT : DARK;
     }
-    #endif
 
     //light 
     if (col == (ssocr_foreground == SSOCR_BLACK) ? LIGHT : DARK) {
@@ -1042,11 +1040,11 @@ int main(int argc, char **argv)
       if (width < 4) {
         continue;
       }
+      #endif
 
       //HACKS - merge pixels with small spaces
-      //fprintf(stderr, "spaces=%d\n", spaces);
- 
-      if (spaces <= 2 && d > 0) {
+      //fprintf(stderr, "spaces=%d h=%d\n", spaces);
+      if (spaces <= 4 && d > 0) {
         digits[d-1].x2 = i;
         digits[d-1].y2 = h-1;
         state = (ssocr_foreground == SSOCR_BLACK) ? FIND_DARK : FIND_LIGHT;
@@ -1058,7 +1056,6 @@ int main(int argc, char **argv)
         }
         continue;
       }
-      #endif
       spaces = 0;
 
       d++;
@@ -1286,14 +1283,15 @@ int main(int argc, char **argv)
       digits[d].digit = D_DECIMAL;
 
       //HACKS: detect broken LCD segment
-      if (max_dig_h / (digits[d].y2 - digits[d].y1)  == max_dig_w / (digits[d].x2 - digits[d].x1)) {
-        skip_d = d;
-      }
+     // if (max_dig_h / (digits[d].y2 - digits[d].y1)  == max_dig_w / (digits[d].x2 - digits[d].x1)) {
+     //   skip_d = d;
+     // }
 
        if(flags & DEBUG_OUTPUT)
         fprintf(stderr, " digit %d is a decimal point\n", d);
     }
   }
+  #if 0
   //HACKS: merge broken LCD segment with the next digit
   if (skip_d != -1) {
     digits[skip_d+1].x1 = digits[skip_d].x1;
@@ -1302,6 +1300,7 @@ int main(int argc, char **argv)
     }
     number_of_digits--;
   }
+  #endif
 
   /* identify a minus sign */
   if(flags & DEBUG_OUTPUT)

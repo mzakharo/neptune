@@ -34,8 +34,8 @@ def simplify(circles, img):
     y1 = y0 + 90
     
     img2 = new_image[y0:y1,x0:x1]
-    img2 = cv2.GaussianBlur(img2, (7,7), 0) 
-    img2 = cv2.adaptiveThreshold(img2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 25, 5)
+    img2 = cv2.GaussianBlur(img2, (5,5), 0) 
+    img2 = cv2.adaptiveThreshold(img2, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, 5)
     return img2
 
 
