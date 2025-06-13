@@ -60,7 +60,10 @@ def on_message(client, userdata, msg):
             client.publish("neptune/status", data)
     prev = consumption
     
-client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+try:
+    client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+except:
+    client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 client.connect("nas.local")
