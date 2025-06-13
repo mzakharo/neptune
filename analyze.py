@@ -21,14 +21,14 @@ def find_circles(img):
     return circles
 
 def simplify(circles, img):
-    angle = 2.7
+    angle = 5.9
     row,col = img.shape[0:2]
     center=list(np.array([row,col])/2)
     rot_mat = cv2.getRotationMatrix2D(center,angle,1.0)
     new_image = cv2.warpAffine(img, rot_mat, (col,row))
     #new_image = img
-    x0 = circles[0][0] - 580
-    y0 = circles[0][1]
+    x0 = circles[0][0] - 590
+    y0 = circles[0][1] - 25
     x1 = x0 + 460
     y1 = y0 + 85
     
