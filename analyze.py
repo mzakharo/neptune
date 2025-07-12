@@ -40,7 +40,7 @@ def find_circles(img):
     rows = gray.shape[0]
     circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1, rows / 24,
                                 param1=30, param2=20,
-                                minRadius=9, maxRadius=14)
+                                minRadius=10, maxRadius=14)
     if circles is not None:
         circles = np.round(circles[0, :]).astype("int")
         circles = sorted(list(circles), key=lambda x : x[0], reverse=True) #always pick the right-most circle
@@ -100,7 +100,7 @@ def simplify_dynamic(circles, img, debug=False):
         Processed image ready for OCR
     """
     # Use dynamic angle calculation if we have at least 2 circles
-    angle = 20
+    angle = 22
     if len(circles) >= 2:
         angle  += calculate_rotation_angle(circles[0], circles[1])
         if debug:
@@ -115,7 +115,7 @@ def simplify_dynamic(circles, img, debug=False):
     
     # Use the first circle for cropping coordinates
     x0 = circles[0][0] - 560
-    y0 = circles[0][1] + 65
+    y0 = circles[0][1] + 55
     x1 = x0 + 460
     y1 = y0 + 80
     
